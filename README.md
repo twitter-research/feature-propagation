@@ -1,5 +1,7 @@
 # Feature Propagation for Learning on Graphs with Missing Node Features [[Paper](https://arxiv.org/abs/2111.12128), [Blog Post](https://towardsdatascience.com/learning-on-graphs-with-missing-features-dd34be61b06), [Presentation](https://www.youtube.com/watch?v=xe5A-xQTBdM), [Slides](https://emanuelerossi.co.uk/assets/pdf/feature_propagation.pdf)]
 
+[![status: static](https://opensource.twitter.dev/status/static.svg)](https://opensource.twitter.dev/status/#static)
+
 ![](figures/fp_diagram.png)
 ## Introduction
 
