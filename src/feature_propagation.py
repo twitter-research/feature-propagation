@@ -35,6 +35,6 @@ class FeaturePropagation(torch.nn.Module):
     def get_propagation_matrix(self, x, edge_index, n_nodes):
         # Initialize all edge weights to ones if the graph is unweighted)
         edge_index, edge_weight = get_symmetrically_normalized_adjacency(edge_index, n_nodes=n_nodes)
-        adj = torch.sparse.FloatTensor(edge_index, values=edge_weight).to(edge_index.device)
+        adj = torch.sparse.FloatTensor(edge_index, values=edge_weight, size=(n_nodes, n_nodes)).to(edge_index.device)
 
         return adj
