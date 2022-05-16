@@ -14,7 +14,7 @@ class FeaturePropagation(torch.nn.Module):
         super(FeaturePropagation, self).__init__()
         self.num_iterations = num_iterations
 
-    def propagate(self, x: Tensor, edge_index: Adj, mask: Tensor, edge_weight: OptTensor = None) -> Tensor:
+    def propagate(self, x: Tensor, edge_index: Adj, mask: Tensor) -> Tensor:
         # out is inizialized to 0 for missing values. However, its initialization does not matter for the final
         # value at convergence
         out = x
@@ -23,7 +23,7 @@ class FeaturePropagation(torch.nn.Module):
             out[mask] = x[mask]
 
         n_nodes = x.shape[0]
-        adj = self.get_propagation_matrix(out, edge_index, edge_weight, n_nodes)
+        adj = self.get_propagation_matrix(out, edge_index, n_nodes)
         for _ in range(self.num_iterations):
             # Diffuse current features
             out = torch.sparse.mm(adj, out)
@@ -32,9 +32,8 @@ class FeaturePropagation(torch.nn.Module):
 
         return out
 
-    def get_propagation_matrix(self, x, edge_index, edge_weight, n_nodes):
+    def get_propagation_matrix(self, x, edge_index, n_nodes):
         # Initialize all edge weights to ones if the graph is unweighted)
-        edge_weight = edge_weight if edge_weight else torch.ones(edge_index.shape[1]).to(edge_index.device)
         edge_index, edge_weight = get_symmetrically_normalized_adjacency(edge_index, n_nodes=n_nodes)
         adj = torch.sparse.FloatTensor(edge_index, values=edge_weight).to(edge_index.device)
 
